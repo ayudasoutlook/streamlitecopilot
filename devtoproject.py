@@ -13,6 +13,16 @@ from datetime import datetime
 
 
 def save_and_download_plot(fig, plot_name):
+    """
+    Save a plotly figure to a temporary directory and create a Streamlit download button for it.
+    Parameters:
+    fig (plotly.graph_objs._figure.Figure): The plotly figure to save and download.
+    plot_name (str): The name to use for the saved plot file.
+    Returns:
+    None
+    Raises:
+    Exception: If there is an error during the saving or downloading process, an error message is displayed in Streamlit.
+    """
     try:
         # Create temp directory if it doesn't exist
         temp_dir = tempfile.mkdtemp()
@@ -40,6 +50,16 @@ def save_and_download_plot(fig, plot_name):
         st.error(f"Error saving plot: {str(e)}")
 
 def perform_advanced_analysis(df):
+    """
+    Perform advanced data analysis on a given DataFrame using Streamlit for visualization.
+    Parameters:
+    df (pandas.DataFrame): The input DataFrame containing the data to be analyzed.
+    The function provides three types of analysis:
+    1. Correlation Analysis: Generates a heatmap of the correlation matrix for numeric columns.
+    2. Linear Regression: Fits a linear regression model between two selected numeric columns and visualizes the regression line.
+    3. K-means Clustering: Performs K-means clustering on two selected numeric columns and visualizes the clusters.
+    The function uses Streamlit for user interaction and Plotly for plotting the results. It also includes options to save and download the generated plots.
+    """
     st.write("### Advanced Analysis")
     
     analysis_type = st.selectbox(
@@ -106,6 +126,16 @@ def perform_advanced_analysis(df):
 
 
 def create_filters(df):
+    """
+    Create filters for a DataFrame using Streamlit's sidebar widgets.
+    This function generates filters for categorical, numeric, and date columns
+    in the provided DataFrame. The filters are displayed in the Streamlit sidebar,
+    allowing users to interactively filter the DataFrame.
+    Parameters:
+    df (pandas.DataFrame): The input DataFrame to be filtered.
+    Returns:
+    pandas.DataFrame: The filtered DataFrame based on user selections in the sidebar.
+    """
     st.sidebar.write("### Data Filters")
     filtered_df = df.copy()
     
@@ -151,6 +181,20 @@ def create_filters(df):
     return filtered_df
 
 def create_visualizations(df):
+    """
+    Creates interactive visualizations for the given DataFrame using Streamlit and Plotly.
+    Parameters:
+    df (pandas.DataFrame): The DataFrame containing the data to visualize.
+    The function provides a Streamlit interface to select the type of chart (Line Chart, Bar Chart, Pie Chart, Scatter Plot),
+    and the columns to be used for the X-axis, Y-axis, or values and names in the case of a Pie Chart. It then generates the
+    corresponding Plotly chart and displays it in the Streamlit app. Additionally, it saves and provides a download link for
+    the generated plot.
+    The function supports:
+    - Line Chart: Plots a line chart with selected X and Y columns.
+    - Bar Chart: Plots a bar chart with selected X and Y columns.
+    - Scatter Plot: Plots a scatter plot with selected X and Y columns.
+    - Pie Chart: Plots a pie chart with selected value and name columns.
+    """
     st.write("### Data Visualization")
     
     # Select columns for visualization
@@ -184,6 +228,15 @@ def create_visualizations(df):
 
 
 def display_statistics(df):
+    """
+    Display various statistics of the given DataFrame using Streamlit.
+    Parameters:
+    df (pandas.DataFrame): The DataFrame for which statistics are to be displayed.
+    The function displays the following statistics:
+    - Basic dataset information including the number of rows, columns, and total null values.
+    - Null values by column, including the count and percentage of null values.
+    - Descriptive statistics for numeric columns.
+    """
     st.write("### Dataset Statistics")
     
     # Basic dataset info
@@ -210,6 +263,14 @@ def display_statistics(df):
     st.dataframe(numeric_stats)
 
 def load_data():
+    """
+    Load data from a CSV or Excel file, apply filters, and provide options to download the filtered data.
+    This function allows the user to upload a CSV or Excel file, converts date columns if any, applies filters to the data,
+    and provides options to download the filtered data. It also displays the filtered data and handles any errors that may occur
+    during the process.
+    Returns:
+        pd.DataFrame or None: The filtered DataFrame if the file is successfully loaded and processed, otherwise None.
+    """
     st.title('Upload data')
     
     uploaded_file = st.file_uploader(
@@ -268,6 +329,19 @@ def load_data():
     return None
 
 def main():
+    """
+    Main function to run the Streamlit application.
+    This function sets up the page configuration, initializes session state,
+    and handles navigation between different pages of the dashboard:
+    "Upload Data", "Data Statistics", "Visualization", and "Advanced Analysis".
+    Pages:
+    - "Upload Data": Allows the user to upload a dataset.
+    - "Data Statistics": Displays statistical information about the uploaded dataset.
+    - "Visualization": Provides visualizations for the uploaded dataset.
+    - "Advanced Analysis": Performs advanced analysis on the uploaded dataset.
+    The function ensures that data is uploaded before accessing the "Data Statistics",
+    "Visualization", and "Advanced Analysis" pages.
+    """
     st.set_page_config(layout="wide")
     
     # Initialize session state
